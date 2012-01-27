@@ -1,0 +1,32 @@
+.drt_caret{
+	width: 1px;
+	height: 14px;
+	background-color:#000099;
+}
+.drt_letrasel{
+	background-color:#86ABD9;
+	color:white;
+}
+.primero, .segundo{
+	color: inherit;
+}
+img.drt_letrasel{
+	opacity:0.4;
+	filter:alpha(opacity=40);
+}
+.drt_activado{
+	border: 2px solid #000099;
+}
+.drt_tirador{
+	font-family: Verdana, Arial, sans-serif;
+	font-size: 8px;
+	height:10px;
+	vertical-align:top;
+	color:#dddddd;
+	font-weight: bold;
+	position:absolute;
+	display: none;
+	background-color: #990000;
+	clip:rect(3px, 14px, 14px, 0px);
+	letter-spacing:-2px;
+}

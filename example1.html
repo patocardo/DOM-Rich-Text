@@ -1,0 +1,163 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+      "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+  <meta http-equiv="content-type" content="text/html; charset=UTF-8" />
+	<script type="text/javascript" src="comunes0_6.js"></script>
+	<script type="text/javascript" src="domrichtext_ini[2012-01-27].js"></script>
+	<script type="text/javascript" src="domrichtext_es[2012-01-27].js"></script>
+	<script type="text/javascript" src="domrichtext_evt[2012-01-27].js"></script>
+	<script type="text/javascript" src="domrichtext_mov[2012-01-27].js"></script>
+	<script type="text/javascript" src="domrichtext_obt[2012-01-27].js"></script>
+	<script type="text/javascript" src="domrichtext_sel[2012-01-27].js"></script>
+	<script type="text/javascript" src="domrichtext_ops[2012-01-27].js"></script>
+	<script type="text/javascript" src="domrichtext_ed[2012-01-27].js"></script>
+	<script type="text/javascript" src="domrichtext_mod[2012-01-27].js"></script>
+	<script type="text/javascript" src="domrichtext_des[2012-01-27].js"></script>
+	<script type="text/javascript" src="domrichtext_aux[2012-01-27].js"></script>
+	<script type="text/javascript" src="domrichtext_tbl[2012-01-27].js"></script>
+  <title>DOMRichText Example 1</title>
+  <link rel="stylesheet" type="text/css" href="drt_estilos.css" />
+  <style type='text/css'>
+  .divs{
+  	background-color:#eeeeee;
+  	width:450px;
+  	font-size: small;
+  }
+  .btnact, .btninact, .lisel{
+  	font-family:Verdana;
+  	font-size:10pt;
+  	border: 1px solid #000099;
+  }
+  .btnact, .btninact{
+  	cursor:pointer;
+  }
+  .btnact{
+	  	background-color:#dddddd;
+  }
+  .btninact{
+	  	background-color:white;
+  }
+  .resaltado{
+		background-color:#ff9999;
+  }
+  .rgst{
+  	font-family:Verdana;
+  	font-size:8pt;
+  	
+  }
+  </style>
+<script type="text/javascript">
+
+
+proc = {
+	blqs : ["H1", "H2", "H3", "P", "BLOCKQUOTE", "OL", "UL"],
+	chusmear: function(){
+		var inf, bar, i, activo = false, n, herr, bl;
+		inf = drt.es.info();
+		bar = p_.sel('drt_op_barra')
+		herr = p_.sel('drt_op_herramientas')
+		p_.sinHijos(bar);
+		for(i=inf.ancestros.length -1; i > 0; i--){
+			if(inf.ancestros[i].nodeType == 1 && drt.es.Area(inf.ancestros[i])){activo = true};
+			if(activo){
+				n = p_.nodo('span', bar, {style:{cursor:'pointer'}, className:i}, inf.ancestros[i].tagName.toLowerCase());
+				p_.ponEvento(n, 'click', (function(){
+						inf = drt.es.info();
+						drt.sel.selElemento(inf.ancestros[this.className]);
+						drt.sel.registrarTodo();
+					}))
+				p_.nodo('span', bar, false, " > ");
+			}
+		}
+		
+		bl = inf.bloque.tagName.toUpperCase()
+		if(bl == 'LI'){
+			bl = inf.bloque.parentNode.tagName.toUpperCase()
+		}
+		herr.rows[0].cells[0].firstChild.selectedIndex = proc.blqs.donde(bl);
+		herr.rows[0].cells[1].className = (inf.negrita)?'btnact' : 'btninact';
+		herr.rows[0].cells[2].className = (inf.cursiva)?'btnact' : 'btninact';
+		herr.rows[0].cells[3].className = (inf.subrayada)?'btnact' : 'btninact';
+		herr.rows[0].cells[4].className = (inf.tachada)?'btnact' : 'btninact';
+		herr.rows[0].cells[5].className = (inf.subindice)?'btnact' : 'btninact';
+		herr.rows[0].cells[6].className = (inf.superindice)?'btnact' : 'btninact';
+	},
+	transfo: function(cond,etiq){
+		var inf
+		inf = drt.es.info();
+		if(inf[cond]){
+			drt.ed.desetiquetar(etiq);	
+		}else{
+			drt.ed.etiquetar(etiq);
+		}
+	},
+	cambloq: function(n){
+		drt.ed.cambiarBloque(proc.blqs[n]); 
+	},
+	deshac: function(){
+		drt.des.deshacer('papa');
+	},
+	rehac: function(){
+	}
+}
+
+function comenzar(){
+	drt.iniciar(false);
+	var conf = {eventos:{'poncaret':[proc.chusmear]}};
+	drt.hacerDRT('papa', conf); 
+	//drt.hacerDRT('papa'); 
+}
+
+
+</script>
+
+</head>
+
+<body onload='comenzar()'>
+<h1>Area Virtual, simple example</h1>
+<table><tbody><tr><td width='100'></td><td>
+
+<form id='frm1' action=''>
+<table id='drt_op_herramientas'><tbody><tr>
+<td class='btninact'><select onchange="proc.cambloq(this.selectedIndex)">
+	<option value='1'>Heading 1</option>
+	<option value='2'>Heading 2</option>
+	<option value='3'>Heading 3</option>
+	<option value='4'>Paragraph</option>
+	<option value='5'>Cite</option>
+	<option value='6'>Ordered List</option>
+	<option value='7'>Unordered List</option>
+</select>
+</td>
+<td onclick="proc.transfo('negrita', 'strong')" class='btninact'><strong>B</strong></td>
+<td onclick="proc.transfo('cursiva', 'em')" class='btninact'><em>I</em></td>
+<td onclick="proc.transfo('subrayada', 'u')" class='btninact'><u>U</u></td>
+<td onclick="proc.transfo('tachada', 'del')" class='btninact'><del>O</del></td>
+<td onclick="proc.transfo('subindice', 'sub')" class='btninact'>X<sub>Y</sub></td>
+<td onclick="proc.transfo('superindice', 'sup')" class='btninact'>X<sup>Y</sup></td>
+<td onclick="proc.deshac()" class='btninact'>↶</td>
+<td onclick="proc.rehac()" class='btninact'>↷</td>
+</tr></tbody></table>
+<div id='papa' class='domrichtext divs' style='font-family:Arial'>
+<h3>Alpha version example</h3>
+<p>This is a sample text  that has some <strong>strong</strong> letters, <i>italics</i> letters, and 
+<span style='font-family:Courier'><b>bold letters</b> inside a SPAN tag</span><br/>
+After the breaking line, <strong>these strong letters <em>have emphatized characters <code> and code fragment</code> deeper</em></strong>, outside that tags, it is still a paragraph</p>
+<p>This is a second paragraph, that is used to test some metod</p>
+<table border='1' cellspacing='4'><tbody>
+	<tr><td>This cell is the first</td><td style='border-left:6px solid grey'>This is the second cell and it has a styled left border</td><td>This is the last cell in the first row</td></tr>
+	<tr><td colspan='2'>This cell has a colspan='2'</td><td><div style='height:50px'>This cell has a div inside</div></td></tr>
+</tbody></table>
+</div>
+<div id='drt_op_barra' class='divs' style='font-family:Arial;font-size:small'></div>
+</form>
+</td></tr>
+<tr><td class='rgst' colspan='2'>TD below has id='tst1', you can use id to do some debug,
+I use p_.nodo('div', 'tst1', false, 'my debug string') to do it</td></tr>
+<tr><td colspan='2' id='tst1' class='rgst'></td></tr>
+</tbody></table>
+
+</body>
+</head>
