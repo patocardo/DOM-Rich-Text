@@ -1,3 +1,5 @@
+#Deprecated
+
 What is DOM Rich Text?
 DOM Rich Text is an alternative to the classical solution of an IFRAME with designMode activated or an element with ContentEditable activated. It relies in an object that allows the developer to work with multiple div tags in a document that can be edited through keyboard, mouse and several methods of the aV object, a javascript Object that controls the DOM structure of the area to edit.
 DOM Rich Text is not a WYSIWYG Editor, but it is the canvas to construct it. Any javascript developer that entered to the world of rich text edition knows that there are a lot of limitations, obfuscations and browser incompatibilities with the classical approach, the solution always falls on the different already-made editors wich deal with execCommand method problems. But despite the beauty and completeness of those editors, many developers like me find themselves limited to what “designMode=true” can do.
